@@ -84,8 +84,8 @@ var activityController = function (Activity) {
                 friendsIds.push(req.authuser._id);
                 var startTime = moment().add(4, "hours").toDate();
                 var endTime = moment().toDate();
-                query.startTime = {"$gte": startTime};
-                query.endTime = {"$lt": endTime};
+                //query.startTime = {"$gte": startTime};
+                //query.endTime = {"$lt": endTime};
                 query.$or= [{addedBy:{$in:friendsIds} }, {visibility: "public"}];
                 var options = {
                     path: 'addedBy.user',
