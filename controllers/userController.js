@@ -20,13 +20,13 @@ var userController = function (User) {
                 console.log('error' + e)
             } else {
                 req.authuser=user;
-                fbController.getUserData(req, req.body.fbToken, function (currentBtToken,_id, err) {
+                fbController.getUserData(req, req.body.fbToken, function (authuser, err) {
                     if(err){
                         res.send('There was an error logging in. Please try again soon.');
                         res.status(500).send("error"); //sending back status 201 which means it was created.
 
                     }else{
-                        res.status(201).send(user); //sending back status 201 which means it was created.
+                        res.status(201).send(authuser); //sending back status 201 which means it was created.
                     }
                 });
             }

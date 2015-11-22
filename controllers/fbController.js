@@ -150,14 +150,14 @@ var fbController = (function () { // the fb controller singelton
                                 req.authuser.save(function (e) {
                                     if (e) {
                                         console.log('Error saving user. ' + e.message);
-                                        callback(req.authuser.token, req.authuser._id, e);
+                                        callback(req.authuser, e);
                                     } else {
                                         console.log('User Saved ok.');
                                         //adding FB Friendships.
                                         updateFbFriendsAndRelations(result.friends.data, req.authuser._id, function () {
                                             console.log("updateFbFriendsAndRelations - Done.")
                                         });
-                                        callback(req.authuser.token, req.authuser._id);
+                                        callback(req.authuser);
                                     }
                                 });
 
@@ -178,10 +178,10 @@ var fbController = (function () { // the fb controller singelton
                                     req.authuser.save(function (e) {
                                         if (e) {
                                             console.log('Error saving user. ' + e.message);
-                                            callback(req.authuser.token, req.authuser._id, e);
+                                            callback(req.authuser, e);
                                         } else {
                                             console.log('User Saved ok.');
-                                            callback(req.authuser.token, req.authuser._id);
+                                            callback(req.authuser);
                                         }
                                     });
                                 } else {
@@ -203,10 +203,10 @@ var fbController = (function () { // the fb controller singelton
                                     req.authuser.save(function (e) {
                                         if (e) {
                                             console.log('Error saving user. ' + e.message);
-                                            callback(req.authuser.token, req.authuser._id, e);
+                                            callback(req.authuser);
                                         } else {
                                             console.log('User Saved ok.');
-                                            callback(req.authuser.token, req.authuser._id);
+                                            callback(req.authuser);
                                             /**/
                                         }
                                     });
