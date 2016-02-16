@@ -40,7 +40,7 @@ app.use(function(req, res, next) {
   }else {
 
 
-    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+    var token = req.body.token || req.query.token || req.headers['x-token'];
 
     if (token) {
       //       console.log('Loading x-access-token -- we have token: ' + token);

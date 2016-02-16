@@ -1,5 +1,5 @@
 /**
- * Created by Joe on 06/06/2015.
+ * Created by ahmad on 06/06/2015.
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
@@ -66,6 +66,18 @@ var activityModel = new Schema({
             "public",
             "private",
             "internal"
+        ]
+    },
+    "category":{
+        type:String,
+        description: "category of the activity",
+        default: "",
+        enum: [
+            "cat1",
+            "cat2",
+            "cat3",
+            "cat4",
+            "cat5"
         ]
     }
 });
