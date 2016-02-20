@@ -22,7 +22,7 @@ var userModel = new Schema({
     "friends":{type:[Schema.Types.Mixed],ref: 'Friendship' },
     "title":{
         type:String,
-        description: "Title of the event"
+        description: "Title of the user"
     },
     "description":{
         type:String,
