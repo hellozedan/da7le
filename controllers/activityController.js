@@ -59,16 +59,17 @@ var activityController = function (Activity) {
         var query = {};
         if (req.query.long && req.query.lat) { //todo fix this
             //console.log(req.query.long );
-          //  var radius = 10 / 3963.2;  //10 miles
-            //if (req.near)
-            var maxRadius = 8 / 6371; //8 kilometters
-            var minRadius = 8 / 6371; //8 kilometters
-           var locationCoords = [req.query.long, req.query.lat];
-        //    query.locationCoords = {$geoWithin: {$centerSphere: [[req.query.long, req.query.lat], radius]}};
-        //    query.locationCoords= {  $near: locationCoords,
-        //        $maxDistance: maxRadius,
-        //        $minDistance:minRadius
-        //    }
+            var radius = 1000 /6371; //3963.2;  //10 miles
+            //var radius = 80 / 6371;
+            if (req.query.radius) {
+                 radius = req.query.radius / 6371;
+            }//8 kilometters
+        //   var locationCoords = [req.query.long, req.query.lat];
+            query.locationCoords = {$geoWithin: {$centerSphere: [[req.query.long, req.query.lat], radius]}};
+            //query.locationCoords= {  $near: locationCoords,
+            //    $maxDistance: radius
+            //
+            //}
         }
         Friendship.find({
             $or: [{friend1: req.authuser._id}, {friend2: req.authuser._id}]
