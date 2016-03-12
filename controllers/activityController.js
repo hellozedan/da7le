@@ -133,7 +133,7 @@ var activityController = function (Activity) {
             select: 'firstName lastName'
         };
         Activity.findById(req.params.activityId)
-            .populate('knownParticipants')
+            .populate('addedBy', '_id firstName lastName fbPhotoUrl')
             .exec(function (err, activitys) {
                 Activity.populate(activitys, options, function (err, activity) {
                     if (err) {
