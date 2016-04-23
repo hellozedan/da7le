@@ -6,7 +6,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var userModel = new Schema({
-<<<<<<< Updated upstream
     "firstName":{type:String},
     "lastName":{type:String},
     "email":{type:String},
@@ -33,8 +32,7 @@ var userModel = new Schema({
         type: Date,
         default: Date.now,
         description: "Timestamp of the addition time and date"
-    }
-=======
+    },
     "name":{type:String}
     //,
     //"lastName":{type:String},
@@ -64,7 +62,6 @@ var userModel = new Schema({
     //    default: Date.now,
     //    description: "Timestamp of the addition time and date"
     //}
->>>>>>> Stashed changes
 });
 
 module.exports= mongoose.model('User', userModel);
