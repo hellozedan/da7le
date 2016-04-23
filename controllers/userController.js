@@ -177,16 +177,16 @@ var userController = function (User) {
 
 
     return {
-        post: post,
-        get: get,
-        findById: findById,
-        getByID: getByID,
-        patch: patch,
-        delete: deleteItem,
-        deleteall: deleteAll,
-        put: put,
-        updateFbData: updateFbData,
-        findMe:findMe
+      //  post: post,
+        get: get//,
+        //findById: findById,
+        //getByID: getByID,
+        //patch: patch,
+        //delete: deleteItem,
+        //deleteall: deleteAll,
+        //put: put,
+        //updateFbData: updateFbData,
+        //findMe:findMe
     };
 
 };

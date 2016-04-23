@@ -16,15 +16,15 @@ var routes = function(User) {
         .delete(userController.deleteall);
 
 
-    userRouter.use('/me', userController.findMe);
-
+    //userRouter.use('/me', userController.findMe);
+    //
     //userRouter.use('/:userId', userController.findById);
 
-    userRouter.route('/me')
-        .get(userController.getByID)
-        .patch(userController.patch)
-        .delete(userController.delete)
-        .put(userController.put);
+    //userRouter.route('/me')
+    //    .get(userController.getByID)
+    //    .patch(userController.patch)
+    //    .delete(userController.delete)
+    //    .put(userController.put);
 
     return userRouter;
 };
