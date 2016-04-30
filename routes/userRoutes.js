@@ -12,8 +12,8 @@ var routes = function(User) {
 
     userRouter.route('/')
         .post(userController.post)
-        .get(userController.get)
-        .delete(userController.deleteall);
+        .get(userController.get);
+      //  .delete(userController.deleteall);
 
 
     //userRouter.use('/me', userController.findMe);

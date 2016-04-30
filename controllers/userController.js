@@ -2,41 +2,47 @@
  * Created by ahmad on 06/06/2015.
  */
 
-var Utils       = require('../utils/utils.js');
-var Friendship  = require('../models/friendship');
+var Utils = require('../utils/utils.js');
+var Friendship = require('../models/friendship');
 var fbController = require('../controllers/fbController');
 
 var userController = function (User) {
 
     var post = function (req, res) {
-        var newUser={};
-        var token = require('crypto').randomBytes(64).toString('hex');
-            newUser.token = token;
-        var user = new User(newUser);
-
-        //console.log(user);
-        user.save(function (e) {
-            if (e) {
-                console.log('error' + e)
+        var user = req.body;
+        if (!(user.userName && user.password)) {
+            res.status(500).send("error");
+        }
+        User.find(user, function (err, users) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
             } else {
-                req.authuser=user;
-                fbController.getUserData(req, req.body.fbToken, function (authuser, err) {
-                    if(err){
-                        res.send('There was an error logging in. Please try again soon.');
-                        res.status(500).send("error"); //sending back status 201 which means it was created.
+                if (users.length > 0) {
+                    res.json(users[0]);
+                }
+                else {
+                    var token = require('crypto').randomBytes(64).toString('hex');
+                    user.token = token;
+                    var newUser = new User(user);
+                    newUser.save(function (e) {
+                        if (e) {
+                            res.status(500).send("error"); //sending back status 201 which means it was created.
+                        } else {
 
-                    }else{
-                        res.status(201).send(authuser); //sending back status 201 which means it was created.
-                    }
-                });
+                            res.status(201).send(newUser); //sending back status 201 which means it was created.
+
+                        }
+                    });
+                }
             }
         });
     };
 
     var get = function (req, res) {
         var query = {};
-        if (req.query.email) {   //todo fix this
-            query.email = req.query.email; //that way we will allow only find by email, else it will bring back everything.
+        if (req.query._id) {   //todo fix this
+            query._id = req.query._id; //that way we will allow only find by email, else it will bring back everything.
         }
         User.find(query, function (err, users) {
             if (err) {
@@ -84,25 +90,24 @@ var userController = function (User) {
     var getByID = function (req, res) {
 
 
-
         Friendship.find({
 
-                 $or: [{friend1: req.user._id},{friend2: req.user._id}]
+            $or: [{friend1: req.user._id}, {friend2: req.user._id}]
 
 
         }).populate("friend1 friend2", "firstName lastName fbPhotoUrl")
             .exec(function (err, results) {
-            if(err){
-                console.log('getByID -- There was a problem retuning user friendships, so returning without');
-                res.json(req.user);
-            }else{
-                //Friendship.populate(results, options,)
-                console.log('getByID -- Returning user with Friends.');
-                req.user.friends = results;
-                res.json(req.user);
-            }
+                if (err) {
+                    console.log('getByID -- There was a problem retuning user friendships, so returning without');
+                    res.json(req.user);
+                } else {
+                    //Friendship.populate(results, options,)
+                    console.log('getByID -- Returning user with Friends.');
+                    req.user.friends = results;
+                    res.json(req.user);
+                }
 
-        });
+            });
 
         //add the friends to the user by using the Friendship schema
 
@@ -177,7 +182,7 @@ var userController = function (User) {
 
 
     return {
-      //  post: post,
+        post: post,
         get: get//,
         //findById: findById,
         //getByID: getByID,

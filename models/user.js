@@ -6,9 +6,9 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var userModel = new Schema({
-    //"firstName":{type:String},
-    //"lastName":{type:String},
-    //"email":{type:String},
+    "userName":{type:String},
+    "password":{type:String},
+    "token":{type:String}
     //"token":{type:String},
     //"lastLocationCoords": {
     //    type: [Number],
@@ -33,7 +33,7 @@ var userModel = new Schema({
     //    default: Date.now,
     //    description: "Timestamp of the addition time and date"
     //},
-    "name":{type:String}
+    //"name":{type:String}
     //,
     //"lastName":{type:String},
     //"email":{type:String}

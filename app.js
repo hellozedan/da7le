@@ -7,13 +7,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 var db = mongoose.connect('mongodb://admin:sa1234@ds032319.mlab.com:32319/mydb');
-//var User = require('./models/user');
+var User = require('./models/user');
 var Subject = require('./models/subject');
 //var Activity = require('./models/activity');
 //var Message = require('./models/message');
 
 var routes = require('./routes/index');
-//var userRouter = require("./routes/userRoutes")(User);
+var userRouter = require("./routes/userRoutes")(User);
 var subjectRouter = require("./routes/subjectRoutes")(Subject);
 //var activityRouter = require("./routes/activityRoutes")(Activity);
 //var messageRouter = require("./routes/messageRoutes")(Message);
@@ -131,7 +131,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //  }
 //});
 app.use('/', routes);
-//app.use('/api/users', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
 //app.use('/api/activities', activityRouter);
 //app.use('/api/messages', messageRouter);
