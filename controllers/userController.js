@@ -5,6 +5,8 @@
 var Utils = require('../utils/utils.js');
 var Friendship = require('../models/friendship');
 var fbController = require('../controllers/fbController');
+var mongoose = require('mongoose');
+
 
 var userController = function (User) {
 
@@ -42,7 +44,7 @@ var userController = function (User) {
     var get = function (req, res) {
         var query = {};
         if (req.query._id) {   //todo fix this
-            query._id = req.query._id; //that way we will allow only find by email, else it will bring back everything.
+            query._id = mongoose.Types.ObjectId(req.query._id); //that way we will allow only find by email, else it will bring back everything.
         }
         User.find(query, function (err, users) {
             if (err) {
