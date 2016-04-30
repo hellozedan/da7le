@@ -13,7 +13,7 @@ var subjectController = function(Subject){
         var newSubject= req.body;
         //      //       console.log('Loading x-access-token -- we have token: ' + token);
       var query = {};
-      query.name = newSubject.user;
+      query._id = mongoose.Types.ObjectId(newSubject.user);
 
       User.find(query, function (err, users) {
           if (err) {
