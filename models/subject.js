@@ -9,6 +9,9 @@ var subjectModel = new Schema({
     "user":{type:Schema.Types.ObjectId,ref: 'User'},
     "title": {
         type: String
+    },
+    "description":{
+        type: String
     }
     //"ts":{
     //	type: Date,
