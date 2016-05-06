@@ -56,21 +56,32 @@ var subjectController = function(Subject){
         });
     };
 
-    var deleteAll = function(req, res, next){
-        Usertrack.remove({}, function(err, usertrack) {
-        	if(err){
-                res.status(500).send(err);
-            }else{
-                res.status(204).send("Removed");
-            }
-        });
+    var deleteFunction = function(req, res){
+        var query={};
+        if (req.query._id) {
+            query._id=mongoose.Types.ObjectId(req.query._id);
+            Subject.remove(query, function(err, data) {
+                if(err){
+                    res.status(500).send(err);
+                }else{
+                    res.status(204).send("Removed");
+                }
+            });
+        }
+        else
+        {
+            res.status(500).send("not found");
+
+        }
+
+
         
     };
 
     return{
         post: post,
         get: get,
-        deleteall: deleteAll
+        delete: deleteFunction
     };
 
 };

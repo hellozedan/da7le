@@ -13,7 +13,7 @@ var routes = function(Subject) {
     subjectRouter.route('/')
         .post(subjectController.post)
         .get(subjectController.get)
-        .delete(subjectController.deleteall);
+        .delete(subjectController.delete);
 
     return subjectRouter;
 };
