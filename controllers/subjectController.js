@@ -38,13 +38,14 @@ var subjectController = function(Subject){
     };
 
     var get = function (req, res) {
+
         var query = {};
 
         if (req.query._id) {   //todo fix this
             query.user =   { $ne: mongoose.Types.ObjectId(req.query._id) }; //that way we will allow only find by email, else it will bring back everything.
         }
         Subject.find(query)
-            .populate('user._id','user.userName', 'name')
+            .populate('user', 'userName')
             .exec(
             function (err, subjects) {
             if (err) {
