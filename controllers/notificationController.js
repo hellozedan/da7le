@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 
 var notificationController = function (User) {
     function post(req, res) {
-        if (!req.body.notification_token && !req.body.message) {
+        if (!req.body.user&& !req.body.message) {
             res.status(500).send("error");
         }
         var user = {_id: mongoose.Types.ObjectId(req.body.user)};
