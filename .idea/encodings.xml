@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/js/app.js" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/js/directives.js" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/js/myControllers.js" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/js/services.js" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/shared/header-bar.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/shared/sidemenu.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/templates/chat.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/templates/login.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/templates/messages.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/templates/subjects.html" charset="UTF-8" />
+    <file url="file://$USER_HOME$/WebstormProjects/chat/www/templates/tabs.html" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>
