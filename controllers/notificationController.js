@@ -7,7 +7,7 @@ var mongoose = require('mongoose');
 
 var notificationController = function (User) {
     function post(req, res) {
-        if (!req.body.user&& !req.body.message) {
+        if (!req.body.user&& !req.body.message&&!req.body.conversationId) {
             res.status(500).send("error");
         }
         var user = {_id: mongoose.Types.ObjectId(req.body.user)};
@@ -31,7 +31,8 @@ var notificationController = function (User) {
                         include_player_ids: [ users[0].notification_token],
                         contents: {
                             en: req.body.message
-                        }
+                        },
+                        data:{conversationId:req.body.conversationId}
                     });
 
                     var options = {
