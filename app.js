@@ -14,6 +14,8 @@ var Subject = require('./models/subject');
 
 var routes = require('./routes/index');
 var userRouter = require("./routes/userRoutes")(User);
+var notificationRouter = require("./routes/notificationRoutes")(User);
+
 var subjectRouter = require("./routes/subjectRoutes")(Subject);
 //var activityRouter = require("./routes/activityRoutes")(Activity);
 //var messageRouter = require("./routes/messageRoutes")(Message);
@@ -133,6 +135,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
+app.use('/api/notification', notificationRouter);
+
+
 //app.use('/api/activities', activityRouter);
 //app.use('/api/messages', messageRouter);
 
