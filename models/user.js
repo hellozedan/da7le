@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
 var userModel = new Schema({
     "userName":{type:String},
     "password":{type:String},
-    "token":{type:String}
+    "token":{type:String},
+    "notification_token":{type:String}
     //"token":{type:String},
     //"lastLocationCoords": {
     //    type: [Number],

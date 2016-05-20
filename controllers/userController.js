@@ -15,6 +15,13 @@ var userController = function (User) {
         if (!(user.userName && user.password)) {
             res.status(500).send("error");
         }
+        //fbController.getUserData("EAAJZA6QrTMq0BAMZAx3s2Y953E6LyhZCEYG59Yx2LSo7YmsHd1rPyVAmpo446a2KU4ByiB3oI66auaw5WhG7UE6ZCpohvAEL4IZBVVMg1mqaNfsmZCKsGmNGEilkXZBQcGl9aJMZBt9p4Ivnj93wp9s1hfWwvYN09u8ZD",function(data,err){
+        //    if(err){
+        //
+        //    }
+        //
+        //})
+
         User.find(user, function (err, users) {
             if (err) {
                 console.log(err);
@@ -24,6 +31,7 @@ var userController = function (User) {
                     res.json(users[0]);
                 }
                 else {
+
                     var token = require('crypto').randomBytes(64).toString('hex');
                     user.token = token;
                     var newUser = new User(user);
