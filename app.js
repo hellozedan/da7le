@@ -19,6 +19,7 @@ var notificationRouter = require("./routes/notificationRoutes")(User);
 var subjectRouter = require("./routes/subjectRoutes")(Subject);
 //var activityRouter = require("./routes/activityRoutes")(Activity);
 //var messageRouter = require("./routes/messageRoutes")(Message);
+var facebookRouter = require("./routes/subjectRoutes")(Subject);
 var app = express();
 var cors = require('cors');
 
@@ -132,11 +133,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 //    }
 //  }
 //});
+var fbController = require('./controllers/fbController');
+app.post('/api/getu/:fbUserToken', function (req, res) {
+  console.log('triggered /getu - start getting user data from FB')
+  fbController.getUserData(req, req.params.fbUserToken, function (currentBtToken,_id, err) {
+    if(err){
+      res.send('There was an error logging in. Please try again soon.');
+    }else{
+      res.send('{"token":"'+currentBtToken+'","_id":"'+_id+'"}');
+    }
+  });
+  //res.send('GEt user data done. ');
+});
 app.use('/', routes);
 app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
 app.use('/api/notification', notificationRouter);
-
+app.use('/api/facebook', notificationRouter);
 
 //app.use('/api/activities', activityRouter);
 //app.use('/api/messages', messageRouter);

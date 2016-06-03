@@ -6,10 +6,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var userModel = new Schema({
-    "userName":{type:String},
-    "password":{type:String},
+    "fbUserId":{type:String,required: true},
+    "fbToken":{type:String,required: true},
     "token":{type:String},
-    "notification_token":{type:String}
+    "notification_token":{type:String,required: true},
+    "first_name":{type:String},
+    "last_name":{type:String},
+    create_date: { type: Date, default: Date.now, required: true },
+    fbPhotoUrl : {type:String},
+    gender : {type:String}
     //"token":{type:String},
     //"lastLocationCoords": {
     //    type: [Number],

@@ -4,7 +4,7 @@
 var FB = require('fb');
 //Step = require('step');
 
-var APP_ID = '661807397286573';
+var APP_ID = '1772880012943378';
 var APP_SECRET = 'c70d4b546f49c6182528565f322d9499';
 var APP_CREDENTIALS = 'client_credentials';
 
@@ -106,7 +106,7 @@ var fbController = (function () { // the fb controller singelton
     }
 
     module.exports = {
-        getUserData: function getUserData(req, userFbToken, callback) {
+        getUserData: function getUserData(userFbToken, callback) {
             if (!APP_TOKEN) {
                 console.log('getting app token');
                 initToken(function () {
@@ -124,107 +124,114 @@ var fbController = (function () { // the fb controller singelton
                 } else {
                     console.log("fb result: " + result);
 
-
+                    callback(result);
                     //before we save the data we received from FB we should check according to FB ID if the user already exist
                     // with a different guestId (for instance if the user switched a mobile device or so..)
-                    var query = {};
-                    query.fbId = result.id;
+                    //var query = {};
+                    //query.fbId = result.id;
 
-                    User.find(query, function (err, users) {
-                        if (err) {
-                            console.log(err);
-                            res.status(500).send(err);
-                        } else {
-                            if (users == null || users.length <= 0) { //in case this is a new user
-
-                                console.log('This is a new user.');
-
-                                req.authuser.firstName = result.first_name;
-                                req.authuser.lastName = result.last_name;
-                                req.authuser.gender = result.gender;
-                                req.authuser.fbId = result.id;
-                                req.authuser.fbPhotoUrl = result.picture.data.url;
-                                req.authuser.fbToken = userFbToken;
-                                //req.authuser.fbFriends = result.friends.data;
-
-                                req.authuser.save(function (e) {
-                                    if (e) {
-                                        console.log('Error saving user. ' + e.message);
-                                        callback(req.authuser, e);
-                                    } else {
-                                        console.log('User Saved ok.');
-                                        //adding FB Friendships.
-                                        updateFbFriendsAndRelations(result.friends.data, req.authuser._id, function () {
-                                            console.log("updateFbFriendsAndRelations - Done.")
-                                        });
-                                        callback(req.authuser);
-                                    }
-                                });
-
-
-                            } else { // we already have this user, so use the old user.
-
-                                if (users[0].token == req.authuser.token) {
-                                    console.log('We already have this user. Will update data.');
-
-                                    req.authuser.firstName = result.first_name;
-                                    req.authuser.lastName = result.last_name;
-                                    req.authuser.gender = result.gender;
-                                    req.authuser.fbId = result.id;
-                                    req.authuser.fbPhotoUrl = result.picture.data.url;
-                                    req.authuser.fbToken = userFbToken;
-                                    //req.authuser.fbFriends = result.friends.data;
-
-                                    req.authuser.save(function (e) {
-                                        if (e) {
-                                            console.log('Error saving user. ' + e.message);
-                                            callback(req.authuser, e);
-                                        } else {
-                                            console.log('User Saved ok.');
-                                            callback(req.authuser);
-                                        }
-                                    });
-                                } else {
-                                    console.log('We already have this user with another token');
-
-
-                                    var userToDelete = req.authuser;
-
-                                    req.authuser = users[0];
-
-                                    req.authuser.firstName = result.first_name;
-                                    req.authuser.lastName = result.last_name;
-                                    req.authuser.gender = result.gender;
-                                    req.authuser.fbId = result.id;
-                                    req.authuser.fbPhotoUrl = result.picture.data.url;
-                                    req.authuser.fbToken = userFbToken;
-                                    //req.authuser.fbFriends = result.friends.data;
-
-                                    req.authuser.save(function (e) {
-                                        if (e) {
-                                            console.log('Error saving user. ' + e.message);
-                                            callback(req.authuser);
-                                        } else {
-                                            console.log('User Saved ok.');
-                                            callback(req.authuser);
-                                            /**/
-                                        }
-                                    });
-
-                                    userToDelete.remove(function (err) {
-                                        if (err) {
-                                            console.log('There was error removing Unused user: ' + userToDelete._id);
-                                        } else {
-                                            console.log('Unused User Removed');
-                                        }
-                                    });
-
-                                }
-
-
-                            }
-                        }
-                    });
+                    //User.find(query, function (err, users) {
+                    //    if (err) {
+                    //        console.log(err);
+                    //        res.status(500).send(err);
+                    //    } else {
+                    //        if (users == null || users.length <= 0) { //in case this is a new user
+                    //
+                    //            console.log('This is a new user.');
+                    //            var user = {
+                    //                first_name : result.first_name,
+                    //                last_name : result.last_name,
+                    //                gender : result.gender,
+                    //                fbUserId : result.id,
+                    //                fbPhotoUrl : result.picture.data.url,
+                    //                fbToken : userFbToken,
+                    //            }
+                    //            req.authuser.firstName = result.first_name;
+                    //            req.authuser.lastName = result.last_name;
+                    //            req.authuser.gender = result.gender;
+                    //            req.authuser.fbId = result.id;
+                    //            req.authuser.fbPhotoUrl = result.picture.data.url;
+                    //            req.authuser.fbToken = userFbToken;
+                    //            //req.authuser.fbFriends = result.friends.data;
+                    //
+                    //            req.authuser.save(function (e) {
+                    //                if (e) {
+                    //                    console.log('Error saving user. ' + e.message);
+                    //                    callback(req.authuser, e);
+                    //                } else {
+                    //                    console.log('User Saved ok.');
+                    //                    //adding FB Friendships.
+                    //                    updateFbFriendsAndRelations(result.friends.data, req.authuser._id, function () {
+                    //                        console.log("updateFbFriendsAndRelations - Done.")
+                    //                    });
+                    //                    callback(req.authuser);
+                    //                }
+                    //            });
+                    //
+                    //
+                    //        } else { // we already have this user, so use the old user.
+                    //
+                    //            if (users[0].token == req.authuser.token) {
+                    //                console.log('We already have this user. Will update data.');
+                    //
+                    //                req.authuser.firstName = result.first_name;
+                    //                req.authuser.lastName = result.last_name;
+                    //                req.authuser.gender = result.gender;
+                    //                req.authuser.fbId = result.id;
+                    //                req.authuser.fbPhotoUrl = result.picture.data.url;
+                    //                req.authuser.fbToken = userFbToken;
+                    //                //req.authuser.fbFriends = result.friends.data;
+                    //
+                    //                req.authuser.save(function (e) {
+                    //                    if (e) {
+                    //                        console.log('Error saving user. ' + e.message);
+                    //                        callback(req.authuser, e);
+                    //                    } else {
+                    //                        console.log('User Saved ok.');
+                    //                        callback(req.authuser);
+                    //                    }
+                    //                });
+                    //            } else {
+                    //                console.log('We already have this user with another token');
+                    //
+                    //
+                    //                var userToDelete = req.authuser;
+                    //
+                    //                req.authuser = users[0];
+                    //
+                    //                req.authuser.firstName = result.first_name;
+                    //                req.authuser.lastName = result.last_name;
+                    //                req.authuser.gender = result.gender;
+                    //                req.authuser.fbId = result.id;
+                    //                req.authuser.fbPhotoUrl = result.picture.data.url;
+                    //                req.authuser.fbToken = userFbToken;
+                    //                //req.authuser.fbFriends = result.friends.data;
+                    //
+                    //                req.authuser.save(function (e) {
+                    //                    if (e) {
+                    //                        console.log('Error saving user. ' + e.message);
+                    //                        callback(req.authuser);
+                    //                    } else {
+                    //                        console.log('User Saved ok.');
+                    //                        callback(req.authuser);
+                    //                        /**/
+                    //                    }
+                    //                });
+                    //
+                    //                userToDelete.remove(function (err) {
+                    //                    if (err) {
+                    //                        console.log('There was error removing Unused user: ' + userToDelete._id);
+                    //                    } else {
+                    //                        console.log('Unused User Removed');
+                    //                    }
+                    //                });
+                    //
+                    //            }
+                    //
+                    //
+                    //        }
+                    //    }
+                    //});
 
 
                 }
