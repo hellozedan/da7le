@@ -5,6 +5,9 @@
 var Utils = require('../utils/utils.js');
 var Friendship = require('../models/friendship');
 var mongoose = require('mongoose');
+var FirebaseTokenGenerator = require("firebase-token-generator");
+var tokenGenerator = new FirebaseTokenGenerator("EAJQd3evljqPu1TiHCne0ZAcJSdJ2qMxkSLA7j19");
+
 
 var fbController = require('../controllers/fbController');
 
@@ -42,6 +45,8 @@ var userController = function (User) {
                                 token: token,
                                 notification_token:  notification_token
                             }
+                            var fireToken = tokenGenerator.createToken({ uid: token, first_name: user.first_name ,last_name:user.last_name});
+                            user.fireToken=fireToken;
                             var newUser = new User(user);
                             newUser.save(function (e) {
                                 if (e) {
