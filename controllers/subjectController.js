@@ -11,6 +11,9 @@ var subjectController = function(Subject){
 
     var post = function (req, res) {
         var newSubject= req.body;
+        var create_date = new Date();
+        newSubject.create_date = create_date;
+        newSubject.unix_date = create_date.valueOf();
         //      //       console.log('Loading x-access-token -- we have token: ' + token);
       var query = {};
       query._id = mongoose.Types.ObjectId(newSubject.user);

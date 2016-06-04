@@ -12,7 +12,9 @@ var subjectModel = new Schema({
     },
     "description":{
         type: String
-    }
+    },
+    create_date: { type: Date, default: Date.now, required: true },
+    unix_date: { type: Number, required: true }
     //"ts":{
     //	type: Date,
     //    default: Date.now,
