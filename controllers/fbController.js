@@ -5,7 +5,7 @@ var FB = require('fb');
 //Step = require('step');
 
 var APP_ID = '1772880012943378';
-var APP_SECRET = 'c70d4b546f49c6182528565f322d9499';
+var APP_SECRET = '29cc8b489a60aca48e425fdb69c67062';
 var APP_CREDENTIALS = 'client_credentials';
 
 //var userController = require("./userController");
