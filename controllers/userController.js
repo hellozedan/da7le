@@ -41,7 +41,7 @@ var userController = function (User) {
                                 gender : result.gender,
                                 fbUserId : result.id,
                                 fbPhotoUrl : result.picture.data.url,
-                                fbCoverPhotoUrl : result.picture.data.url,
+                                fbCoverPhotoUrl : result.cover.source,
                                 fbToken : fbToken,
                                 token: token,
                                 notification_token:  notification_token
@@ -66,6 +66,7 @@ var userController = function (User) {
                             currentUser.gender = result.gender;
                             currentUser.fbUserId = result.id;
                             currentUser.fbPhotoUrl = result.picture.data.url;
+                            currentUser.fbCoverPhotoUrl=result.cover.source
                             currentUser.fbToken = fbToken;
                             var fireToken = tokenGenerator.createToken({ uid: currentUser.token, first_name: currentUser.first_name ,last_name:currentUser.last_name});
                             currentUser.fireToken=fireToken;
