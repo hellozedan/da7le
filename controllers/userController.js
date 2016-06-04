@@ -106,14 +106,13 @@ var userController = function (User) {
         });
     };
 
-    var findById = function (req, res, next) {
+    var findById = function (req, res) {
         User.findById(req.params.userId, function (err, user) {
             if (err) {
                 console.log(err);
                 res.status(500).send(err);
             } else if (user) {
-                req.user = user;
-                next(); // continue to the request handling.
+                res.json(user);
             } else { //in case no user found.
                 res.status(404).send("No User Found.");
             }
@@ -235,8 +234,8 @@ var userController = function (User) {
 
     return {
         post: post,
-        get: get//,
-        //findById: findById,
+        get: get,
+        findById: findById//,
         //getByID: getByID,
         //patch: patch,
         //delete: deleteItem,

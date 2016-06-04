@@ -44,7 +44,10 @@ var subjectController = function(Subject){
 
         var query = {};
         var userSubjects = req.query.userSubjects || false;
-        var userId = req.query.userId !=="null" || mongoose.Types.ObjectId(req.authuser._id);
+        var userId = mongoose.Types.ObjectId(req.authuser._id);
+        if(req.query.userId !=="null"){
+            userId = req.query.userId;
+        }
         if(userSubjects === "true"){
             query.user = userId;
         }else{

@@ -13,12 +13,15 @@ var routes = function(User) {
     userRouter.route('/')
         .post(userController.post)
         .get(userController.get);
+
+    userRouter.route('/:userId')
+        .get(userController.findById);
       //  .delete(userController.deleteall);
 
 
     //userRouter.use('/me', userController.findMe);
     //
-    //userRouter.use('/:userId', userController.findById);
+
 
     //userRouter.route('/me')
     //    .get(userController.getByID)
