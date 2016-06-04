@@ -41,6 +41,7 @@ var userController = function (User) {
                                 gender : result.gender,
                                 fbUserId : result.id,
                                 fbPhotoUrl : result.picture.data.url,
+                                fbCoverPhotoUrl : result.picture.data.url,
                                 fbToken : fbToken,
                                 token: token,
                                 notification_token:  notification_token

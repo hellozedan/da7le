@@ -14,6 +14,7 @@ var userModel = new Schema({
     "last_name":{type:String},
     create_date: { type: Date, default: Date.now, required: true },
     fbPhotoUrl : {type:String},
+    fbCoverPhotoUrl: {type:String},
     gender : {type:String},
     fireToken:{type:String}
     //"token":{type:String},
