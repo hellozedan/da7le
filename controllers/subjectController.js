@@ -55,6 +55,20 @@ var subjectController = function(Subject){
         });
     };
 
+    var getCategories = function (req, res) {
+
+        var query = {};
+        Category.find(query)
+            .exec(
+                function (err, categories) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.json(categories);
+                    }
+                });
+    };
     var get = function (req, res) {
 
         var query = {};
@@ -108,7 +122,8 @@ var subjectController = function(Subject){
         post: post,
         get: get,
         delete: deleteFunction,
-        put: put
+        put: put,
+        getCategories:getCategories
     };
 
 };
