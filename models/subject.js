@@ -7,6 +7,11 @@ var mongoose = require('mongoose'),
 
 var subjectModel = new Schema({
     "user":{type:Schema.Types.ObjectId,ref: 'User'},
+    "categories": [{
+        type: Schema.Types.ObjectId,
+        ref: 'Category',
+        "description": "Array of categories"
+    }],
     "title": {
         type: String
     },
@@ -15,6 +20,7 @@ var subjectModel = new Schema({
     },
     create_date: { type: Date, default: Date.now, required: true },
     unix_date: { type: Number, required: true }
+
     //"ts":{
     //	type: Date,
     //    default: Date.now,

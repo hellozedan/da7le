@@ -13,6 +13,7 @@ var routes = function(Subject) {
     subjectRouter.route('/')
         .post(subjectController.post)
         .get(subjectController.get)
+        .put(subjectController.put)
         .delete(subjectController.delete);
 
     return subjectRouter;

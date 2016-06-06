@@ -4,40 +4,55 @@
 
 var Utils = require('../utils/utils.js');
 var User = require('../models/user.js');
+var Category = require('../models/category.js');
 var mongoose = require('mongoose');
 
 
-var subjectController = function(Subject){
 
+var subjectController = function(Subject){
     var post = function (req, res) {
         var newSubject= req.body;
         var create_date = new Date();
         newSubject.create_date = create_date;
         newSubject.unix_date = create_date.valueOf();
         //      //       console.log('Loading x-access-token -- we have token: ' + token);
-      var query = {};
-      query._id = mongoose.Types.ObjectId(newSubject.user);
+        var query = {};
+        query._id = mongoose.Types.ObjectId(newSubject.user);
 
-      User.find(query, function (err, users) {
-          if (err) {
-              console.log('error: ' + e);
-              res.status(500).send(err);
-          }
-          else{
-              newSubject.user=users[0]._doc._id;
-              var subject = new Subject(newSubject);
-              subject.save(function (e) {
-                  if (e) {
-                      console.log('error: ' + e);
-                      res.status(500).send(err);
-                  } else {
-                      console.log('no error');
-                      res.status(201).send(subject);
-                  }
-              });
-          }
-      });
+        //User.find(query, function (err, users) {
+        //    if (err) {
+        //        console.log('error: ' + e);
+        //        res.status(500).send(err);
+        //    }
+        //    else{
+                newSubject.user=req.authuser._id;
+                var subject = new Subject(newSubject);
+                subject.save(function (e) {
+                    if (e) {
+                        console.log('error: ' + e);
+                        res.status(500).send(err);
+                    } else {
+                        console.log('no error');
+                        res.status(201).send(subject);
+                    }
+                });
+        //    }
+        //});
 
+    };
+
+    var put = function (req, res) {
+        var newCategory= req.body;
+        var category = new Category(newCategory);
+        category.save(function (e) {
+            if (e) {
+                console.log('error: ' + e);
+                res.status(500).send(err);
+            } else {
+                console.log('no error');
+                res.status(201).send(category);
+            }
+        });
     };
 
     var get = function (req, res) {
@@ -92,7 +107,8 @@ var subjectController = function(Subject){
     return{
         post: post,
         get: get,
-        delete: deleteFunction
+        delete: deleteFunction,
+        put: put
     };
 
 };
