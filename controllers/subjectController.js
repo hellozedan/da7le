@@ -80,7 +80,7 @@ var subjectController = function (Subject) {
 		if (userSubjects === "true") {
 			query.user = userId;
 		} else {
-			query.user = {$ne: mongoose.Types.ObjectId(req.authuser._id)};
+			//query.user = {$ne: mongoose.Types.ObjectId(req.authuser._id)};
 		}
 		if (req.body && req.body.gender && req.body.gender !== "both") {
 			query.gender = req.body.gender;
