@@ -12,12 +12,17 @@ var subjectModel = new Schema({
         ref: 'Category',
         "description": "Array of categories"
     }],
+    "locationCoords": {
+        type: [Number],
+        index: '2d'
+    },
     "title": {
         type: String
     },
     "description":{
         type: String
     },
+    gender : {type:String},
     create_date: { type: Date, default: Date.now, required: true },
     unix_date: { type: Number, required: true }
 

@@ -15,6 +15,8 @@ var routes = function(Subject) {
         .get(subjectController.get)
         .put(subjectController.put)
         .delete(subjectController.delete);
+    subjectRouter.route('/filter')
+        .post(subjectController.get)
     subjectRouter.route('/categories')
         .get(subjectController.getCategories)
 
