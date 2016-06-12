@@ -92,18 +92,7 @@ var userController = function (User) {
     };
 
     var get = function (req, res) {
-        var query = {};
-        if (req.query._id) {   //todo fix this
-            query._id = mongoose.Types.ObjectId(req.query._id); //that way we will allow only find by email, else it will bring back everything.
-        }
-        User.find(query, function (err, users) {
-            if (err) {
-                console.log(err);
-                res.status(500).send(err);
-            } else {
-                res.json(users);
-            }
-        });
+        return req.authuser;
     };
 
     var findById = function (req, res) {

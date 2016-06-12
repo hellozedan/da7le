@@ -14,6 +14,7 @@ var routes = function(User) {
         .post(userController.post)
         .get(userController.get);
 
+
     userRouter.route('/:userId')
         .get(userController.findById);
       //  .delete(userController.deleteall);
