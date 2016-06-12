@@ -44,7 +44,9 @@ var userController = function (User) {
                                 fbCoverPhotoUrl : result.cover.source,
                                 fbToken : fbToken,
                                 token: token,
-                                notification_token:  notification_token
+                                notification_token:  notification_token,
+                                isNeedLogin:false
+
                             }
                             var fireToken = tokenGenerator.createToken({ uid: token, first_name: user.first_name ,last_name:user.last_name});
                             user.fireToken=fireToken;
@@ -70,6 +72,7 @@ var userController = function (User) {
                             currentUser.fbToken = fbToken;
                             var fireToken = tokenGenerator.createToken({ uid: currentUser.token, first_name: currentUser.first_name ,last_name:currentUser.last_name});
                             currentUser.fireToken=fireToken;
+                            currentUser.isNeedLogin=true;
                             currentUser.save(function (e) {
                                 if (e) {
                                     console.log('Error saving user. ' + e.message);
