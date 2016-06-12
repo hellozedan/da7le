@@ -95,7 +95,7 @@ var userController = function (User) {
     };
 
     var get = function (req, res) {
-        return req.authuser;
+        res.status(201).send(req.authuser);
     };
 
     var findById = function (req, res) {

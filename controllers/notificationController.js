@@ -32,7 +32,13 @@ var notificationController = function (User) {
                         contents: {
                             en: req.body.message
                         },
-                        data:{conversationId:req.body.conversationId}
+                        android_group: req.body.conversationId,
+                        data: {
+                            conversationId:req.body.conversationId,
+                            userName: req.body.userName,
+                            subjectName: req.body.subjectName,
+                            fbPhotoUrl: req.body.fbPhotoUrl
+                        }
                     });
 
                     var options = {
