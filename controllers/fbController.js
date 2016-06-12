@@ -115,7 +115,7 @@ var fbController = (function () { // the fb controller singelton
             }
             console.log('ready for usage regular.');
             FB.api('me', {
-                fields: 'id,first_name,last_name,email,gender,picture.width(400),cover.width(600).height(300)',
+                fields: 'id,first_name,last_name,email,gender,picture.width(400),cover.width(600).height(300),likes',
                 limit: 20,
                 access_token: userFbToken
             }, function (result) {

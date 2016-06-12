@@ -71,8 +71,8 @@ var userController = function (User) {
                             currentUser.fbCoverPhotoUrl=result.cover.source
                             currentUser.fbToken = fbToken;
                             var fireToken = tokenGenerator.createToken({ uid: currentUser.token, first_name: currentUser.first_name ,last_name:currentUser.last_name});
-                            currentUser.fireToken=fireToken;
-                            currentUser.isNeedLogin=true;
+                            currentUser.fireToken = fireToken;
+                            currentUser.isNeedLogin = false;
                             currentUser.save(function (e) {
                                 if (e) {
                                     console.log('Error saving user. ' + e.message);
