@@ -41,10 +41,8 @@ var userController = function (User) {
                                 gender : result.gender,
                                 fbUserId : result.id,
                                 fbPhotoUrl : result.picture.data.url,
-                                fbCoverPhotoUrl : result.cover.source,
                                 fbToken : fbToken,
                                 token: token,
-                                notification_token:  notification_token,
                                 isNeedLogin:false
 
                             }
@@ -68,7 +66,6 @@ var userController = function (User) {
                             currentUser.gender = result.gender;
                             currentUser.fbUserId = result.id;
                             currentUser.fbPhotoUrl = result.picture.data.url;
-                            currentUser.fbCoverPhotoUrl=result.cover.source
                             currentUser.fbToken = fbToken;
                             var fireToken = tokenGenerator.createToken({ uid: currentUser.token, first_name: currentUser.first_name ,last_name:currentUser.last_name});
                             currentUser.fireToken = fireToken;
@@ -111,6 +108,23 @@ var userController = function (User) {
         });
     };
 
+    var notification = function(req, res){
+        var notification_token = req.body.notification_token;
+        User.findOneAndUpdate(
+            { _id: req.authuser_id},
+            { notification_token: notification_token},
+            function(e,d){
+                if (e) {
+                    console.log('Error saving user. ' + e.message);
+                    res.status(500).send("error");
+                } else {
+                    console.log('User Saved ok.');
+                    res.status(201).send(notification_token);
+                    /**/
+                }
+            }
+        );
+    };
     var findMe = function (req, res, next) {
 
         req.user = req.authuser;
@@ -227,7 +241,8 @@ var userController = function (User) {
     return {
         post: post,
         get: get,
-        findById: findById//,
+        findById: findById,
+        notification: notification
         //getByID: getByID,
         //patch: patch,
         //delete: deleteItem,

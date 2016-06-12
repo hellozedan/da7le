@@ -13,7 +13,8 @@ var routes = function(User) {
     userRouter.route('/')
         .post(userController.post)
         .get(userController.get);
-
+    userRouter.route('/notification')
+        .post(userController.notification);
 
     userRouter.route('/:userId')
         .get(userController.findById);

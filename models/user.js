@@ -9,7 +9,7 @@ var userModel = new Schema({
     "fbUserId":{type:String,required: true},
     "fbToken":{type:String,required: true},
     "token":{type:String},
-    "notification_token":{type:String,required: true},
+    "notification_token":{type:String},
     "first_name":{type:String},
     "last_name":{type:String},
     create_date: { type: Date, default: Date.now, required: true },
