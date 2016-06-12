@@ -110,20 +110,26 @@ var userController = function (User) {
 
     var notification = function(req, res){
         var notification_token = req.body.notification_token;
-        User.findOneAndUpdate(
-            { _id: req.authuser_id},
-            { notification_token: notification_token},
-            function(e,d){
-                if (e) {
-                    console.log('Error saving user. ' + e.message);
-                    res.status(500).send("error");
-                } else {
-                    console.log('User Saved ok.');
-                    res.status(201).send(notification_token);
-                    /**/
-                }
+        User.find({_id: req.authuser._id}, function (err, users) {
+            if (err) {
+                console.log(err);
+                res.status(500).send(err);
+            } else {
+                var user = users[0];
+                user.notification_token = req.body.notification_token;
+                user.save(function (e) {
+                    if (e) {
+                        res.status(500).send("error"); //sending back status 201 which means it was created.
+                    } else {
+
+                        res.status(201).send(req.body.notification_token); //sending back status 201 which means it was created.
+
+
+                    }
+                });
             }
-        );
+        });
+
     };
     var findMe = function (req, res, next) {
 
