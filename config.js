@@ -1,0 +1,1 @@
+subjectsDuration = 8;

@@ -72,6 +72,11 @@ var subjectController = function (Subject) {
 	var get = function (req, res) {
 
 		var query = {};
+		var now = new Date();
+		now.setHours(now.getHours() - subjectsDuration);
+		query.create_date = {
+			$gte: now
+		}
 		var userSubjects = req.query.userSubjects || false;
 		var userId = mongoose.Types.ObjectId(req.authuser._id);
 		if (req.query.userId !== "null") {
