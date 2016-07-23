@@ -17,7 +17,8 @@ var userModel = new Schema({
     fbCoverPhotoUrl: {type:String},
     gender : {type:String},
     fireToken:{type:String},
-    isNeedLogin:{type:Boolean}
+    isNeedLogin:{type:Boolean},
+    isLoggedIn:{type:Boolean}
     //"token":{type:String},
     //"lastLocationCoords": {
     //    type: [Number],

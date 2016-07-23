@@ -15,6 +15,8 @@ var routes = function(User) {
         .get(userController.get);
     userRouter.route('/notification')
         .post(userController.notification);
+    userRouter.route('/logOut')
+        .get(userController.logOut);
 
     userRouter.route('/:userId')
         .get(userController.findById);

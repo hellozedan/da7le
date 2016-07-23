@@ -91,6 +91,10 @@ var subjectController = function (Subject) {
 			query.gender = req.body.gender;
 		}
 		if (req.body && req.body.categories && req.body.categories.length > 0) {
+			for(var i=0;i< req.body.categories.length;i++)
+			{
+				req.body.categories[i]= mongoose.Types.ObjectId(req.body.categories[i]);
+			}
 			query.categories = {"$in": req.body.categories};
 
 		}
@@ -114,7 +118,6 @@ var subjectController = function (Subject) {
 		//}
 
 	//}
-
 		subjectQuery
 		.populate('user')
 		.exec(
@@ -123,7 +126,7 @@ var subjectController = function (Subject) {
 					console.log(err);
 					res.status(500).send(err);
 				} else {
-					res.json(subjects);
+					res.status(200).send(subjects);
 				}
 			});
 };

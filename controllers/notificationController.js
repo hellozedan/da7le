@@ -20,7 +20,7 @@ var notificationController = function (User) {
                     res.status(500).send("no User");
                 }
                 else {
-
+                   if(users[0].isLoggedIn) {
                     var web_request_https = require('https');
                     var notifications_request_host = 'onesignal.com';
                     var notifications_request_path = '/api/v1/notifications';
@@ -28,13 +28,13 @@ var notificationController = function (User) {
                     var notifications_app_id = 'ee6f85c1-a2ff-4d1b-9fa6-29dd4cc306ef';
                     var postData = JSON.stringify({
                         app_id: notifications_app_id,
-                        include_player_ids: [ users[0].notification_token],
+                        include_player_ids: [users[0].notification_token],
                         contents: {
                             en: req.body.message
                         },
                         android_group: req.body.conversationId,
                         data: {
-                            conversationId:req.body.conversationId,
+                            conversationId: req.body.conversationId,
                             userName: req.body.userName,
                             subjectName: req.body.subjectName,
                             fbPhotoUrl: req.body.fbPhotoUrl
@@ -74,6 +74,7 @@ var notificationController = function (User) {
 
                     newReq.write(postData);
                     newReq.end();
+                }
                 }
             }
         });
