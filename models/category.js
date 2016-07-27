@@ -9,14 +9,12 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var categoryModel = new Schema({
-	"name": {
+	name: {
+		type: String
+	},
+	image_url: {
 		type: String
 	}
-	//"ts":{
-	//	type: Date,
-	//    default: Date.now,
-	//    description: "Timestamp of the track date/time"
-	//},
 });
 
 module.exports= mongoose.model('Category', categoryModel);
