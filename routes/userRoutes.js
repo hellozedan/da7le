@@ -18,6 +18,8 @@ var routes = function(User) {
     userRouter.route('/logOut')
         .get(userController.logOut);
 
+    userRouter.route('/report')
+        .post(userController.report);
     userRouter.route('/:userId')
         .get(userController.findById);
       //  .delete(userController.deleteall);

@@ -4,6 +4,8 @@
 
 var Utils = require('../utils/utils.js');
 var Friendship = require('../models/friendship');
+var Report = require('../models/report');
+
 var mongoose = require('mongoose');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator("EAJQd3evljqPu1TiHCne0ZAcJSdJ2qMxkSLA7j19");
@@ -251,6 +253,16 @@ var userController = function (User) {
 			}
 		});
 	};
+	var report = function (req, res) {
+		var newReport=new Report(req.body);
+		newReport.save(function (err) {
+			if (err) {
+				res.status(500).send(err);
+			} else {
+				res.json(newReport);
+			}
+		});
+	};
 
 	var updateFbData = function (user, userFbData) {
 
@@ -279,7 +291,8 @@ var userController = function (User) {
 		get: get,
 		findById: findById,
 		notification: notification,
-		logOut:logOut
+		logOut:logOut,
+		report:report
 		//getByID: getByID,
 		//patch: patch,
 		//delete: deleteItem,
