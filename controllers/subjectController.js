@@ -9,7 +9,34 @@ var mongoose = require('mongoose');
 
 
 var subjectController = function (Subject) {
-	var post = function (req, res) {
+	var interest = function (req, res) {
+		var subjectId = req.body.subjectId;
+		var query = {_id:subjectId};
+		Subject.find(query)
+			.exec(
+				function (err, categories) {
+					if (err) {
+						console.log(err);
+						res.status(500).send(err);
+					} else {
+						if(categories.length>0) {
+							categories[0].interested.push(req.authuser._id);
+							categories[0].save(function (e) {
+								if (e) {
+									console.log('error: ' + e);
+									res.status(500).send(err);
+								} else {
+									console.log('no error');
+									res.status(203).send(categories[0]);
+								}
+							});
+						}
+					}
+				});
+
+	}
+
+			var post = function (req, res) {
 		var newSubject = req.body;
 		var create_date = new Date();
 		newSubject.create_date = create_date;
@@ -22,8 +49,8 @@ var subjectController = function (Subject) {
 		//    if (err) {
 		//        console.log('error: ' + e);
 		//        res.status(500).send(err);
-		//    }
-		//    else{
+		//    }//    else{
+
 		newSubject.user = req.authuser._id;
 		newSubject.gender = req.authuser.gender;
 		var subject = new Subject(newSubject);
@@ -156,7 +183,8 @@ return {
 	get: get,
 	delete: deleteFunction,
 	put: put,
-	getCategories: getCategories
+	getCategories: getCategories,
+	interest:interest
 };
 
 }

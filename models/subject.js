@@ -25,7 +25,12 @@ var subjectModel = new Schema({
     gender : {type:String},
     create_date: { type: Date, default: Date.now, required: true },
     unix_date: { type: Number, required: true }
-
+,
+    "interested": [{
+        type: Schema.Types.ObjectId,
+        ref: 'interested',
+        "description": "Array of interested"
+    }]
     //"ts":{
     //	type: Date,
     //    default: Date.now,
