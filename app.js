@@ -89,7 +89,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   //console.log('req.body: ' + req.body)
   //console.log('Loading x-access-token -- begin.');
-  if((req.path === "/api/users") && req.method === "POST"){
+  if((req.path.indexOf("/categories") != -1) || ((req.path === "/api/users") && req.method === "POST")){
     next();
   }else {
 
@@ -146,6 +146,7 @@ app.post('/api/getu/:fbUserToken', function (req, res) {
   });
   //res.send('GEt user data done. ');
 });
+app.use('/categories', express.static(__dirname + '/categories'));
 app.use('/', routes);
 app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);

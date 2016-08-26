@@ -7,11 +7,11 @@ var mongoose = require('mongoose'),
 
 var subjectModel = new Schema({
     "user":{type:Schema.Types.ObjectId,ref: 'User'},
-    "categories": [{
+    "category": {
         type: Schema.Types.ObjectId,
         ref: 'Category',
         "description": "Array of categories"
-    }],
+    },
     "locationCoords": {
         type: [Number],
         index: '2d'

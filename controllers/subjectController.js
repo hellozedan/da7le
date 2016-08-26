@@ -36,7 +36,7 @@ var subjectController = function (Subject) {
 
 	}
 
-			var post = function (req, res) {
+	var post = function (req, res) {
 		var newSubject = req.body;
 		var create_date = new Date();
 		newSubject.create_date = create_date;
@@ -147,6 +147,7 @@ var subjectController = function (Subject) {
 	//}
 		subjectQuery
 		.populate('user')
+			.populate('category')
 		.exec(
 			function (err, subjects) {
 				if (err) {
