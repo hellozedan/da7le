@@ -19,6 +19,10 @@ var subjectModel = new Schema({
     "title": {
         type: String
     },
+    "status": {
+        type: Boolean,
+        default:true
+    },
     "description":{
         type: String
     },

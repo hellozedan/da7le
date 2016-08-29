@@ -20,7 +20,9 @@ var routes = function(Subject) {
     subjectRouter.route('/interested')
         .post(subjectController.interest);
     subjectRouter.route('/categories')
-        .get(subjectController.getCategories)
+        .get(subjectController.getCategories)  ;
+    subjectRouter.route('/status')
+        .post(subjectController.changeStatus)
 
 
     return subjectRouter;

@@ -81,6 +81,30 @@ var subjectController = function (Subject) {
 				}
 			});
 		};
+		var changeStatus = function (req, res) {
+			var query = {_id: req.body._id};
+			Subject.find(query)
+				.exec(
+					function (err, subjects) {
+						if (err) {
+							console.log(err);
+							res.status(500).send(err);
+						} else {
+							if (subjects.length > 0) {
+								subjects[0].status = req.body.status;
+								subjects[0].save(function (e) {
+									if (e) {
+										console.log('error: ' + e);
+										res.status(500).send(err);
+									} else {
+										console.log('no error');
+										res.status(201).send(subjects[0]);
+									}
+								});
+							}
+						}
+					});
+		};
 
 		var getCategories = function (req, res) {
 
@@ -100,8 +124,8 @@ var subjectController = function (Subject) {
 
 			var query = {};
 			var now = new Date();
-			var skip=0;
-			var limit=20;
+			var skip = 0;
+			var limit = 20;
 			now.setHours(now.getHours() - subjectsDuration);
 			query.create_date = {
 				$gte: now
@@ -118,6 +142,9 @@ var subjectController = function (Subject) {
 			}
 			if (req.body && req.body.gender && req.body.gender !== "both") {
 				query.gender = req.body.gender;
+			}
+			if (req.body && (req.body.status != undefined||req.query.status != undefined)) {
+				query.status = Boolean(req.body.status) || Boolean(req.query.status);
 			}
 			if (req.body && req.body.categories && req.body.categories.length > 0) {
 				for (var i = 0; i < req.body.categories.length; i++) {
@@ -140,9 +167,9 @@ var subjectController = function (Subject) {
 				//	}
 				//}
 			}
-			if (req.body && req.body.skip&& req.body.limit){
-				skip=req.body.skip;
-				limit=req.body.limit;
+			if (req.body && req.body.skip && req.body.limit) {
+				skip = req.body.skip;
+				limit = req.body.limit;
 			}
 
 			//query.locationCoords= { $near :
@@ -206,7 +233,8 @@ var subjectController = function (Subject) {
 			delete: deleteFunction,
 			put: put,
 			getCategories: getCategories,
-			interest: interest
+			interest: interest,
+			changeStatus: changeStatus
 		};
 
 	}
