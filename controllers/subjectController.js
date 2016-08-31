@@ -150,7 +150,7 @@ var subjectController = function (Subject) {
 				for (var i = 0; i < req.body.categories.length; i++) {
 					req.body.categories[i] = mongoose.Types.ObjectId(req.body.categories[i]);
 				}
-				query.categories = {"$in": req.body.categories};
+				query.category = {"$in": req.body.categories};
 
 			}
 			var subjectQuery = Subject.find(query);
