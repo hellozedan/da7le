@@ -255,6 +255,7 @@ var userController = function (User) {
 	};
 	var report = function (req, res) {
 		var newReport=new Report(req.body);
+		newReport.reporterUser=req.authuser._id;
 		newReport.save(function (err) {
 			if (err) {
 				res.status(500).send(err);

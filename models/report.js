@@ -12,6 +12,10 @@ var reportModel = new Schema({
     "user":{
         type:Schema.Types.ObjectId,
         description: "Brief description about the activity"
+    } ,
+    "reporterUser":{
+        type:Schema.Types.ObjectId,
+        description: "Brief description about the activity"
     }
 });
 
