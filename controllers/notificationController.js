@@ -32,7 +32,7 @@ var notificationController = function (User) {
                             template_id: template_id,
                             include_player_ids: [users[0].notification_token],
                             contents: {
-                                en: req.body.message
+                                en: req.body.userName + ": " + req.body.message
                             },
                             android_group: req.body.conversationId,
                             data: {
