@@ -1,2 +1,2 @@
-subjectsDuration = 12;
+subjectsDuration = 42;
 categoriesCache = [];
