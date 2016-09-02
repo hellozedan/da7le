@@ -38,33 +38,50 @@ var subjectController = function (Subject) {
 
 		var post = function (req, res) {
 			var newSubject = req.body;
-			var create_date = new Date();
-			newSubject.create_date = create_date;
-			newSubject.unix_date = create_date.valueOf();
-			//      //       console.log('Loading x-access-token -- we have token: ' + token);
-			var query = {};
-			query._id = mongoose.Types.ObjectId(newSubject.user);
+			if(!newSubject._id) {
+				var create_date = new Date();
+				newSubject.create_date = create_date;
+				newSubject.unix_date = create_date.valueOf();
+				//      //       console.log('Loading x-access-token -- we have token: ' + token);
+				var query = {};
+				query._id = mongoose.Types.ObjectId(newSubject.user);
 
-			//User.find(query, function (err, users) {
-			//    if (err) {
-			//        console.log('error: ' + e);
-			//        res.status(500).send(err);
-			//    }//    else{
+				//User.find(query, function (err, users) {
+				//    if (err) {
+				//        console.log('error: ' + e);
+				//        res.status(500).send(err);
+				//    }//    else{
 
-			newSubject.user = req.authuser._id;
-			newSubject.gender = req.authuser.gender;
-			var subject = new Subject(newSubject);
-			subject.save(function (e) {
-				if (e) {
-					console.log('error: ' + e);
+				newSubject.user = req.authuser._id;
+				newSubject.gender = req.authuser.gender;
+				var subject = new Subject(newSubject);
+				subject.save(function (e) {
+					if (e) {
+						console.log('error: ' + e);
+						res.status(500).send(err);
+					} else {
+						console.log('no error');
+						res.status(201).send(subject);
+					}
+				});
+				//    }
+				//});
+			}
+			else
+			{
+				var query = { _id: newSubject._id };
+				Subject.update(query, { description: newSubject.description }, {}, callback);
+				function callback (err, numAffected) {
+					if (err) {
+					console.log('error: ' + err);
 					res.status(500).send(err);
 				} else {
 					console.log('no error');
-					res.status(201).send(subject);
+					res.status(201).send(numAffected);
 				}
-			});
-			//    }
-			//});
+					// numAffected is the number of updated documents
+				}
+			}
 
 		};
 
