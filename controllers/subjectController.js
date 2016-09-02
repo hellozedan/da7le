@@ -193,6 +193,7 @@ var subjectController = function (Subject) {
 							subjectQuery.skip(skip).limit(limit)
 								.populate('user')
 								.populate('category')
+								.sort({'create_date': -1})
 								.exec(
 									function (err, subjects) {
 										if (err) {
