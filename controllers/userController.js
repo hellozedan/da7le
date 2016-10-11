@@ -17,54 +17,100 @@ var userController = function (User) {
 
 	var post = function (req, res) {
 		var user = req.body;
+		if (!req.body.phone_number) {
+			res.status(500).send("error");
+		}
+		var query = {};
+		query.phone_number = user.phone_number
+		User.find(query, function (err, users) {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				if (users == null || users.length <= 0) {
+					console.log('This is a new user.');
+					user.activation_code = Math.floor(Math.random() * 90000) + 10000;
+					var token = require('crypto').randomBytes(64).toString('hex');
+					user.token = token
+					var newUser = new User(user);
+					newUser.save(function (e) {
+						if (e) {
+							res.status(500).send("error"); //sending back status 201 which means it was created.
+						} else {
+
+							res.status(201).send(newUser); //sending back status 201 which means it was created.
+
+						}
+					});
+				} else {
+					// we already have this user, so use the old user.
+					var currentUser = users[0];
+					currentUser.activation_code = Math.floor(Math.random() * 90000) + 10000;
+					currentUser.save(function (e) {
+						if (e) {
+							console.log('Error saving user. ' + e.message);
+							res.status(500).send("error");
+						} else {
+							console.log('User Saved ok.');
+							res.status(201).send(currentUser);
+							/**/
+						}
+					});
+				}
+			}
+		});
+	};
+	var confirm = function (req, res) {
+		var user = {};
+		if (!req.body._id&&req.body.activation_code) {
+			res.status(500).send("error");
+		}
+		user=req.body;
+		User.find(user, function (err, users) {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				if (users == null || users.length <= 0) {
+					res.status(500).send("error");
+				} else {
+					// we already have this user, so use the old user.
+					var currentUser = users[0];
+					currentUser.confirmed_date = new Date();
+					currentUser.save(function (e) {
+						if (e) {
+							console.log('Error saving user. ' + e.message);
+							res.status(500).send("error");
+						} else {
+							console.log('User Saved ok.');
+							res.status(201).send(currentUser);
+							/**/
+						}
+					});
+				}
+			}
+		});
+	};
+	var facebookLogin = function (req, res) {
+		var user = req.body;
 		var fbToken = user.fbToken;
-		var notification_token = user.notification_token;
-		if (!fbToken) {
+		if (!fbToken&&!user._id) {
 			res.status(500).send("error");
 		}
 		fbController.getUserData(fbToken, function (result, err) {
 			if (err) {
-
+				res.status(500).send(err);
 			}
 			if (result) {
 				var query = {};
-				query.fbUserId = result.id;
+				query._id = user._id;
 				User.find(query, function (err, users) {
 					if (err) {
 						console.log(err);
 						res.status(500).send(err);
 					} else {
 						if (users == null || users.length <= 0) {
-							console.log('This is a new user.');
-							var token = require('crypto').randomBytes(64).toString('hex');
-							var user = {
-								first_name: result.first_name,
-								last_name: result.last_name,
-								gender: result.gender,
-								fbUserId: result.id,
-								fbPhotoUrl: result.picture.data.url,
-								fbToken: fbToken,
-								token: token,
-								isNeedLogin: false,
-								isLoggedIn: true
-
-							}
-							var fireToken = tokenGenerator.createToken({
-								uid: token,
-								first_name: user.first_name,
-								last_name: user.last_name
-							});
-							user.fireToken = fireToken;
-							var newUser = new User(user);
-							newUser.save(function (e) {
-								if (e) {
-									res.status(500).send("error"); //sending back status 201 which means it was created.
-								} else {
-
-									res.status(201).send(newUser); //sending back status 201 which means it was created.
-
-								}
-							});
+							res.status(500).send("error");
 						} else {
 							// we already have this user, so use the old user.
 							var currentUser = users[0];
@@ -254,8 +300,8 @@ var userController = function (User) {
 		});
 	};
 	var report = function (req, res) {
-		var newReport=new Report(req.body);
-		newReport.reporterUser=req.authuser._id;
+		var newReport = new Report(req.body);
+		newReport.reporterUser = req.authuser._id;
 		newReport.save(function (err) {
 			if (err) {
 				res.status(500).send(err);
@@ -292,8 +338,10 @@ var userController = function (User) {
 		get: get,
 		findById: findById,
 		notification: notification,
-		logOut:logOut,
-		report:report
+		logOut: logOut,
+		report: report,
+		facebookLogin:facebookLogin,
+		confirm:confirm
 		//getByID: getByID,
 		//patch: patch,
 		//delete: deleteItem,

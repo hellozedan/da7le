@@ -93,7 +93,7 @@ app.use(function(req, res, next) {
   }else {
 
 
-    var token = req.body.token || req.query.token || req.headers['access-token'];
+    var token =req.headers.token|| req.body.token || req.query.token || req.headers['access-token'];
 
     if (token) {
       //       console.log('Loading x-access-token -- we have token: ' + token);
