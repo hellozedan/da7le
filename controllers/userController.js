@@ -30,8 +30,6 @@ var userController = function (User) {
 				if (users == null || users.length <= 0) {
 					console.log('This is a new user.');
 					user.activation_code = Math.floor(Math.random() * 90000) + 10000;
-					var token = require('crypto').randomBytes(64).toString('hex');
-					user.token = token
 					var newUser = new User(user);
 					newUser.save(function (e) {
 						if (e) {
@@ -77,6 +75,8 @@ var userController = function (User) {
 					// we already have this user, so use the old user.
 					var currentUser = users[0];
 					currentUser.confirmed_date = new Date();
+					var token = require('crypto').randomBytes(64).toString('hex');
+					currentUser.token = token
 					currentUser.save(function (e) {
 						if (e) {
 							console.log('Error saving user. ' + e.message);
