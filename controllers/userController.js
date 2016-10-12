@@ -8,7 +8,7 @@ var Report = require('../models/report');
 
 var mongoose = require('mongoose');
 var FirebaseTokenGenerator = require("firebase-token-generator");
-var tokenGenerator = new FirebaseTokenGenerator("EAJQd3evljqPu1TiHCne0ZAcJSdJ2qMxkSLA7j19");
+var tokenGenerator = new FirebaseTokenGenerator("Wc8F0RTWYFg7TcTv0iQNbosIYhE1LC6fzitiuCNY");
 
 var Match = require('../models/match');
 
@@ -107,6 +107,7 @@ var userController = function (User) {
 				query.phone_number = otherPersons[i].phone_number;
 				User.find(query, function (err, users) {
 					if (err) {
+						console.log(err);
 						console.log(err);
 						res.status(500).send(err);
 					} else {
