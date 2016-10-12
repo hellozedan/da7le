@@ -11,6 +11,7 @@ var userModel = new Schema({
 	token: {type: String},
 	notification_token: {type: String},
 	first_name: {type: String},
+	contactName: {type: String},
 	last_name: {type: String},
 	create_date: {type: Date, default: Date.now, required: true},
 	fbPhotoUrl: {type: String},

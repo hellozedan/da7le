@@ -17,6 +17,8 @@ var routes = function (User) {
 		.post(userController.notification);
 	userRouter.route('/confirm')
 		.post(userController.confirm);
+	userRouter.route('/match')
+		.post(userController.match);
 	userRouter.route('/facebookLogin')
 		.post(userController.facebookLogin);
 	userRouter.route('/logOut')

@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var tokenGenerator = new FirebaseTokenGenerator("EAJQd3evljqPu1TiHCne0ZAcJSdJ2qMxkSLA7j19");
 
+var Match = require('../models/match');
 
 var fbController = require('../controllers/fbController');
 
@@ -58,12 +59,88 @@ var userController = function (User) {
 			}
 		});
 	};
-	var confirm = function (req, res) {
-		var user = {};
-		if (!req.body._id&&req.body.activation_code) {
+	var match = function (req, res) {
+		var mainPerson = req.body.mainPerson;
+		var otherPersons = req.body.otherPersons;
+		if (!mainPerson && !otherPersons) {
 			res.status(500).send("error");
 		}
-		user=req.body;
+		var newMatch = new Match({user_id: req.authuser._id, match: req.body});
+		newMatch.save(function (e) {
+			if (e) {
+				res.status(500).send("error"); //sending back status 201 which means it was created.
+			} else {
+			}
+		});
+		var query = {};
+		query.phone_number = mainPerson.phone_number;
+		User.find(query, function (err, users) {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				if (users == null || users.length <= 0) {
+					console.log('This is a new user.');
+					var user = {phone_number: mainPerson.phone_number, contactName: mainPerson.contactName};
+					var newUser = new User(user);
+					newUser.save(function (e) {
+						if (e) {
+							res.status(500).send("error"); //sending back status 201 which means it was created.
+						} else {
+							mainPerson = newUser;
+							checkOtherUsers(0);
+						}
+					});
+				}
+				else {
+					mainPerson = users[0];
+					checkOtherUsers(0);
+				}
+			}
+		});
+		function checkOtherUsers(i) {
+			if (i >= otherPersons.length) {
+				res.status(201).send({mainPerson: mainPerson, otherPersons: otherPersons});
+			}
+			else {
+				var query = {};
+				query.phone_number = otherPersons[i].phone_number;
+				User.find(query, function (err, users) {
+					if (err) {
+						console.log(err);
+						res.status(500).send(err);
+					} else {
+						if (users == null || users.length <= 0) {
+							console.log('This is a new user.');
+							var user = {
+								phone_number: otherPersons[i].phone_number,
+								contactName: otherPersons[i].contactName
+							};
+							var newUser = new User(user);
+							newUser.save(function (e) {
+								if (e) {
+									res.status(500).send("error"); //sending back status 201 which means it was created.
+								} else {
+									otherPersons[i] = newUser;
+									checkOtherUsers(++i);
+								}
+							});
+						}
+						else {
+							otherPersons[i] = users[0];
+							checkOtherUsers(++i);
+						}
+					}
+				});
+			}
+		}
+	};
+	var confirm = function (req, res) {
+		var user = {};
+		if (!req.body._id && req.body.activation_code) {
+			res.status(500).send("error");
+		}
+		user = req.body;
 		User.find(user, function (err, users) {
 			if (err) {
 				console.log(err);
@@ -94,7 +171,7 @@ var userController = function (User) {
 	var facebookLogin = function (req, res) {
 		var user = req.body;
 		var fbToken = user.fbToken;
-		if (!fbToken&&!user._id) {
+		if (!fbToken && !user._id) {
 			res.status(500).send("error");
 		}
 		fbController.getUserData(fbToken, function (result, err) {
@@ -340,8 +417,9 @@ var userController = function (User) {
 		notification: notification,
 		logOut: logOut,
 		report: report,
-		facebookLogin:facebookLogin,
-		confirm:confirm
+		facebookLogin: facebookLogin,
+		confirm: confirm,
+		match: match
 		//getByID: getByID,
 		//patch: patch,
 		//delete: deleteItem,
