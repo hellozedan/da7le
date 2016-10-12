@@ -100,7 +100,7 @@ var userController = function (User) {
 		});
 		function checkOtherUsers(i) {
 			if (i >= otherPersons.length) {
-				res.status(201).send({mainPerson: mainPerson, otherPersons: otherPersons});
+				res.status(201).send({mainPerson: mainPerson, otherPersons: otherPersons,match_id:newMatch._id});
 			}
 			else {
 				var query = {};
