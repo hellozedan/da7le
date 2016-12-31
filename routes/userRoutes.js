@@ -26,6 +26,9 @@ var routes = function (User) {
 	userRouter.route('/logOut')
 		.get(userController.logOut);
 
+	userRouter.route('/getFriends')
+		.get(userController.getFriends);
+
 	userRouter.route('/report')
 		.post(userController.report);
 	userRouter.route('/:userId')
