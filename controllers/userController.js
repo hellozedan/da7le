@@ -232,8 +232,10 @@ var userController = function (User) {
 	var getFriends = function (req, res) {
 		var friendsId;
 		var dahleTimes={};
+		var nicknames=[];
 		req.authuser.friends.forEach(function (elemnt) {
 			dahleTimes[elemnt._id]=elemnt.dahleTime;
+			nicknames[elemnt._id]=elemnt.nickname;
 		})
 		friendsId = req.authuser.friends.map(function (a) {
 			return a._id;
@@ -247,7 +249,9 @@ var userController = function (User) {
 					console.log('No Friends');
 				}
 				friends.forEach(function (elemnt) {
-					elemnt._doc.dahleTime=dahleTimes[elemnt._id]
+					elemnt._doc.dahleTime=dahleTimes[elemnt._id];
+					elemnt._doc.nickname=nicknames[elemnt._id];
+
 				})
 				res.status(201).send(friends);
 			}
@@ -381,6 +385,7 @@ var userController = function (User) {
 					currentUser.confirmed_date = new Date();
 					var token = require('crypto').randomBytes(64).toString('hex');
 					currentUser.token = token
+					currentUser.isNeedLogin = false;
 					currentUser.save(function (e) {
 						if (e) {
 							console.log('Error saving user. ' + e.message);
