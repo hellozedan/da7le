@@ -231,6 +231,10 @@ var userController = function (User) {
 	};
 	var getFriends = function (req, res) {
 		var friendsId;
+		var dahleTimes={};
+		req.authuser.friends.forEach(function (elemnt) {
+			dahleTimes[elemnt._id]=elemnt.dahleTime;
+		})
 		friendsId = req.authuser.friends.map(function (a) {
 			return a._id;
 		});
@@ -242,6 +246,9 @@ var userController = function (User) {
 				if (friends == null || friends.length <= 0) {
 					console.log('No Friends');
 				}
+				friends.forEach(function (elemnt) {
+					elemnt._doc.dahleTime=dahleTimes[elemnt._id]
+				})
 				res.status(201).send(friends);
 			}
 		});
