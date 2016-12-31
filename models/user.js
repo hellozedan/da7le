@@ -6,28 +6,24 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 var userModel = new Schema({
-	fbUserId: {type: String},
-	fbToken: {type: String},
+	/*fbUserId: {type: String},
+	fbToken: {type: String},*/
 	token: {type: String},
 	notification_token: {type: String},
 	first_name: {type: String},
 	contactName: {type: String},
 	last_name: {type: String},
 	create_date: {type: Date, default: Date.now, required: true},
-	fbPhotoUrl: {type: String},
-	fbCoverPhotoUrl: {type: String},
+	/*fbPhotoUrl: {type: String},
+	fbCoverPhotoUrl: {type: String},*/
 	phone_number: {type: String},
 	activation_code: {type: String},
 	confirmed_date: {type: Date},
 	gender: {type: String},
 	fireToken: {type: String},
 	isNeedLogin: {type: Boolean},
-	isLoggedIn: {type: Boolean}
-	//"token":{type:String},
-	//"lastLocationCoords": {
-	//    type: [Number],
-	//    index: "2d"
-	//},
+	isLoggedIn: {type: Boolean},
+	friends:{type:[Schema.Types.Mixed],ref: 'user' },
 	//"fbId":{type:String},
 	//"gender":{type:String},
 	//"fbPhotoUrl":{type:String},

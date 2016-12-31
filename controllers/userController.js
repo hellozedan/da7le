@@ -59,6 +59,84 @@ var userController = function (User) {
 			}
 		});
 	};
+
+	var invite = function (req, res) {
+		var ThisUser = req.authuser;
+		var user = req.body;
+		if (!req.body.phone_number) {
+			res.status(500).send("error");
+		}
+		var query = {};
+		query.phone_number = user.phone_number;
+
+		User.find(query, function (err, users) {
+			if (err) {
+				console.log(err);
+				res.status(500).send(err);
+			} else {
+				if (users == null || users.length <= 0) {
+					console.log('This is a new user. we need to send sms');
+
+					// send msg
+					//create user
+					var newUser = new User(user);
+					newUser.save(function (e) {
+						if (e) {
+							res.status(500).send("error"); //sending back status 201 which means it was created.
+						} else {
+
+							res.status(201).send(newUser); //sending back status 201 which means it was created.
+
+						}
+					});
+				}
+				else {
+
+					var exitInList=false;
+					var dalhleUser = users[0];
+
+					for(var i=0; i<ThisUser.friends.length;i++){
+						if(ThisUser.friends[i]._id==dalhleUser._id){
+							//send da7le
+							exitInList=true;
+							ThisUser.friends[i].dahleTime=Date.now;
+							ThisUser.save(function (e) {
+								if (e) {
+									console.log('Error saving user. ' + e.message);
+									res.status(500).send("error");
+								} else {
+									console.log('User Saved ok.');
+									res.status(201).send(ThisUser);
+								}
+							});
+
+
+						}
+					}
+					if(!exitInList){
+						ThisUser.friends.push(
+							{id:dalhleUser._id,
+							nickname:user.nickname,
+								dahleTime:Date.now
+							}
+						);
+						//send notification;
+						ThisUser.save(function (e) {
+							if (e) {
+								console.log('Error saving user. ' + e.message);
+								res.status(500).send("error");
+							} else {
+								console.log('User Saved ok.');
+								res.status(201).send(ThisUser);
+							}
+						});
+
+					}
+				}
+			}
+		});
+	};
+
 	var match = function (req, res) {
 		var mainPerson = req.body.mainPerson;
 		var otherPersons = req.body.otherPersons;
@@ -288,8 +366,8 @@ var userController = function (User) {
 
 	var getByID = function (req, res) {
 
-
-		Friendship.find({
+//no need
+	/*	Friendship.find({
 
 			$or: [{friend1: req.user._id}, {friend2: req.user._id}]
 
@@ -306,7 +384,7 @@ var userController = function (User) {
 					res.json(req.user);
 				}
 
-			});
+			});*/
 
 		//add the friends to the user by using the Friendship schema
 
@@ -420,7 +498,8 @@ var userController = function (User) {
 		report: report,
 		facebookLogin: facebookLogin,
 		confirm: confirm,
-		match: match
+		match: match,
+		invite:invite
 		//getByID: getByID,
 		//patch: patch,
 		//delete: deleteItem,
