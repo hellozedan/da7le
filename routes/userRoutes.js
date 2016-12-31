@@ -19,6 +19,8 @@ var routes = function (User) {
 		.post(userController.confirm);
 	userRouter.route('/invite')
 		.post(userController.invite);
+	userRouter.route('/sendDahle')
+		.post(userController.sendDahle);
 	userRouter.route('/match')
 		.post(userController.match);
 	userRouter.route('/facebookLogin')
