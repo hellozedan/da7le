@@ -2,9 +2,6 @@
  * Created by zedan on 5/20/2016.
  */
 var Utils = require('../utils/utils.js');
-var mongoose = require('mongoose');
-
-
 var notificationController = function (User) {
     function post(req, res) {
         if (!req.body.user && !req.body.message && !req.body.conversationId) {
@@ -82,8 +79,11 @@ var notificationController = function (User) {
         });
     }
 
+
+
     return {
-        post: post//,
+        post: post
+        //,
         // get: get//,
         //findById: findById,
         //getByID: getByID,
@@ -96,4 +96,7 @@ var notificationController = function (User) {
     };
 
 };
+
+
+var mongoose = require('mongoose');
 module.exports = notificationController;

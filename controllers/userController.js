@@ -178,6 +178,7 @@ var userController = function (User) {
 									reject('err');
 								} else {
 									console.log('User Saved ok.');
+									SendNotification(dalhleUser,ThisUser);
 									resolve(ThisUser);
 								}
 							});
@@ -217,6 +218,7 @@ var userController = function (User) {
 											reject('err');
 										} else {
 											console.log('User Saved ok.');
+											SendNotification(dalhleUser,ThisUser);
 											resolve(ThisUser);
 										}
 									});
@@ -640,6 +642,80 @@ var userController = function (User) {
 		});
 
 	};
+
+	var SendNotification = function(user, sender) {
+		if (!user && !sender ) {
+			return false;
+		}
+		var user = {_id: user._id};
+		User.find(user, function (err, users) {
+			if (err) {
+				console.log(err);
+				return false;
+			} else {
+				if (users.length == 0) {
+					console.log("no User");
+					return false;
+				}
+				else {
+					if (!users[0].isNeedLogin) {
+						var web_request_https = require('https');
+						var notifications_request_host = 'onesignal.com';
+						var notifications_request_path = '/api/v1/notifications';
+						var notifications_request_autho = 'Basic NTJkNWUzZGUtZTMzYy00Y2U4LTg0NWEtMTA2YTZmNzE1ODEy';
+						var notifications_app_id = 'ee6f85c1-a2ff-4d1b-9fa6-29dd4cc306ef';
+						var template_id = '2dea08d5-6233-4515-b648-963be1a6592e';
+						var postData = JSON.stringify({
+							app_id: notifications_app_id,
+							template_id: template_id,
+							include_player_ids: [users[0].notification_token],
+							contents: {
+								en: "da7le!!"
+							},
+							data: {
+								senderId: sender._id,
+								senderPhone: sender.phone_number
+							}
+						});
+
+						var options = {
+							host: notifications_request_host,
+							path: notifications_request_path,
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'Authorization': notifications_request_autho
+							}
+						};
+						var newReq = web_request_https.request(options, function (phone_res) {
+							var result = '';
+							phone_res.setEncoding('utf8');
+							phone_res.on('data', function (chunk) {
+								result += chunk;
+							});
+
+							phone_res.on('end', function (data) {
+								return true;
+							});
+
+							phone_res.on('error', function (err) {
+								return false;
+							});
+						});
+
+
+						newReq.on('error', function (err) {
+							return false;
+
+						});
+
+						newReq.write(postData);
+						newReq.end();
+					}
+				}
+			}
+		});
+	}
 
 
 	return {
