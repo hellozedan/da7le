@@ -4,7 +4,7 @@
 var Utils = require('../utils/utils.js');
 var notificationController = function (User) {
     function post(req, res) {
-        if (!req.body.user && !req.body.message && !req.body.conversationId) {
+        if (!req.body.user && !req.body.message ) {
             res.status(500).send("error");
         }
         var user = {_id: mongoose.Types.ObjectId(req.body.user)};
@@ -17,23 +17,30 @@ var notificationController = function (User) {
                     res.status(500).send("no User");
                 }
                 else {
-                    if (users[0].isLoggedIn) {
+                    if (!users[0].isNeedLogin) {
+                        var senderName='';
+                        users[0].friends.forEach(function (elemnt) {
+                            if(elemnt._id.toString()===req.authuser._id.toString())
+                            {
+                                senderName=elemnt.nickname;
+                            }
+                        })
                         var web_request_https = require('https');
                         var notifications_request_host = 'onesignal.com';
                         var notifications_request_path = '/api/v1/notifications';
-                        var notifications_request_autho = 'Basic NTJkNWUzZGUtZTMzYy00Y2U4LTg0NWEtMTA2YTZmNzE1ODEy';
-                        var notifications_app_id = 'ee6f85c1-a2ff-4d1b-9fa6-29dd4cc306ef';
-                        var template_id = '2dea08d5-6233-4515-b648-963be1a6592e';
+                        var notifications_request_autho = 'Basic MmI2YWU3NTEtOGQ0ZS00YzFhLWI0MTQtZmUyZTM2YjQ2ZDc3';
+                        var notifications_app_id = 'f4348bab-6374-4533-9781-75bb7041baf3';
+                        var template_id = 'a59cd1f2-78ad-47b3-a8ee-3c9518b2420e';
                         var postData = JSON.stringify({
                             app_id: notifications_app_id,
-                            template_id: template_id,
+                             template_id: template_id,
                             include_player_ids: [users[0].notification_token],
                             contents: {
-                                en: req.body.userName + ": " + req.body.message
+                                en: senderName + ": " + req.body.message
                             },
-                            android_group: req.body.conversationId,
+                            android_group: req.body.user,
                             data: {
-                                conversationId: req.body.conversationId,
+                                // conversationId: req.body.conversationId,
                                 userName: req.body.userName,
                                 subjectName: req.body.subjectName,
                                 fbPhotoUrl: req.body.fbPhotoUrl

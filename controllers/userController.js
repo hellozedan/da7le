@@ -130,7 +130,7 @@ var userController = function (User) {
 										newUser.friends.push(
 											{
 												_id: ThisUser._id,
-												nickname: ThisUser.phone_number,
+												nickname: ThisUser.nickname,
 												phone_number: ThisUser.phone_number
 											}
 										);
@@ -644,77 +644,71 @@ var userController = function (User) {
 	};
 
 	var SendNotification = function(user, sender) {
-		if (!user && !sender ) {
-			return false;
+		if (!user.notification_token) {
+			var senderName='';
+
+			user.friends.forEach(function (elemnt) {
+				if(elemnt._id.toString()===sender._id.toString())
+				{
+					senderName=elemnt.nickname;
+				}
+			})
+			var web_request_https = require('https');
+			var notifications_request_host = 'onesignal.com';
+			var notifications_request_path = '/api/v1/notifications';
+			var notifications_request_autho = 'Basic MmI2YWU3NTEtOGQ0ZS00YzFhLWI0MTQtZmUyZTM2YjQ2ZDc3';
+			var notifications_app_id = 'f4348bab-6374-4533-9781-75bb7041baf3';
+			var template_id = 'a59cd1f2-78ad-47b3-a8ee-3c9518b2420e';
+			var postData = JSON.stringify({
+				app_id: notifications_app_id,
+				template_id: template_id,
+				include_player_ids: [user.notification_token],
+				contents: {
+					en: senderName + ": da7le ?"
+				},
+				android_group:sender._id,
+				data: {
+					sender:sender
+					// conversationId: req.body.conversationId,
+					// userName: req.body.userName,
+					// subjectName: req.body.subjectName,
+					// fbPhotoUrl: req.body.fbPhotoUrl
+				}
+			});
+
+			var options = {
+				host: notifications_request_host,
+				path: notifications_request_path,
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': notifications_request_autho
+				}
+			};
+			var newReq = web_request_https.request(options, function (phone_res) {
+				var result = '';
+				phone_res.setEncoding('utf8');
+				phone_res.on('data', function (chunk) {
+					result += chunk;
+				});
+
+				phone_res.on('end', function (data) {
+				});
+
+				phone_res.on('error', function (err) {
+				});
+			});
+
+
+			newReq.on('error', function (err) {
+				res.status(500).send("error");
+
+			});
+
+			newReq.write(postData);
+			newReq.end();
 		}
-		var user = {_id: user._id};
-		User.find(user, function (err, users) {
-			if (err) {
-				console.log(err);
-				return false;
-			} else {
-				if (users.length == 0) {
-					console.log("no User");
-					return false;
-				}
-				else {
-					if (!users[0].isNeedLogin) {
-						var web_request_https = require('https');
-						var notifications_request_host = 'onesignal.com';
-						var notifications_request_path = '/api/v1/notifications';
-						var notifications_request_autho = 'Basic NTJkNWUzZGUtZTMzYy00Y2U4LTg0NWEtMTA2YTZmNzE1ODEy';
-						var notifications_app_id = 'ee6f85c1-a2ff-4d1b-9fa6-29dd4cc306ef';
-						var template_id = '2dea08d5-6233-4515-b648-963be1a6592e';
-						var postData = JSON.stringify({
-							app_id: notifications_app_id,
-							template_id: template_id,
-							include_player_ids: [users[0].notification_token],
-							contents: {
-								en: "da7le!!"
-							},
-							data: {
-								senderId: sender._id,
-								senderPhone: sender.phone_number
-							}
-						});
 
-						var options = {
-							host: notifications_request_host,
-							path: notifications_request_path,
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-								'Authorization': notifications_request_autho
-							}
-						};
-						var newReq = web_request_https.request(options, function (phone_res) {
-							var result = '';
-							phone_res.setEncoding('utf8');
-							phone_res.on('data', function (chunk) {
-								result += chunk;
-							});
-
-							phone_res.on('end', function (data) {
-								return true;
-							});
-
-							phone_res.on('error', function (err) {
-								return false;
-							});
-						});
-
-
-						newReq.on('error', function (err) {
-							return false;
-
-						});
-
-						newReq.write(postData);
-						newReq.end();
-					}
-				}
-			}
-		});
 	}
 
 
