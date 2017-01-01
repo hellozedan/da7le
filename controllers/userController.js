@@ -644,7 +644,7 @@ var userController = function (User) {
 	};
 
 	var SendNotification = function(user, sender) {
-		if (!user.notification_token) {
+		if (user.notification_token) {
 			var senderName='';
 
 			user.friends.forEach(function (elemnt) {
